@@ -3,129 +3,123 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rapid Response Team — Unit Portal</title>
-<meta name="description" content="Rapid Response Team — официальный портал отряда: личный кабинет, обучение, опросник, состав и панель администратора.">
+<meta name="description" content="Rapid Response Team — официальный портал отряда">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="topbar">
-  <a class="brand" href="#home" data-page="home">
+  <a class="brand" href="#" data-page="home">
     <img src="assets/rrt-logo.png" class="brand-logo" alt="RRT">
     <span><b>RAPID RESPONSE TEAM</b><small>UNIT PORTAL</small></span>
   </a>
-  <div class="account" id="account">
-    <button class="discord-login" id="loginBtn" data-testid="login-btn">ВОЙТИ ЧЕРЕЗ DISCORD</button>
-  </div>
+  <div class="account" id="account"><button class="discord-login" id="loginBtn">ВОЙТИ ЧЕРЕЗ DISCORD</button></div>
 </header>
 <div class="layout">
 <aside class="sidebar">
   <div class="side-label">НАВИГАЦИЯ</div>
-  <button class="nav-item active" data-page="home">⌂ &nbsp; Главная</button>
-  <button class="nav-item" data-page="guide">▣ &nbsp; Руководство</button>
-  <button class="nav-item" data-page="training">◈ &nbsp; Обучение</button>
-  <button class="nav-item" data-page="roles">◆ &nbsp; Должности</button>
-  <button class="nav-item" data-page="roster">▤ &nbsp; Личный состав</button>
-  <button class="nav-item" data-page="rules">⚠ &nbsp; Устав и правила</button>
-  <div class="side-label lower">ЛИЧНЫЙ КАБИНЕТ</div>
-  <button class="nav-item" data-page="cabinet">◉ &nbsp; Личный кабинет</button>
-  <button class="nav-item" data-page="survey">✎ &nbsp; Опросник</button>
-  <div class="side-label">УПРАВЛЕНИЕ</div>
-  <button class="nav-item" data-page="officer">★ &nbsp; Офицерский раздел</button>
-  <button class="nav-item" data-page="admin">⚖ &nbsp; Панель администратора</button>
+  <button class="nav-item active" data-page="home" data-min="0">⌂ &nbsp; Главная</button>
+  <button class="nav-item" data-page="cabinet" data-min="2">☰ &nbsp; Личный кабинет</button>
+  <button class="nav-item" data-page="survey" data-min="1">✎ &nbsp; Опросник</button>
+  <button class="nav-item" data-page="guide" data-min="2">▣ &nbsp; Руководство</button>
+  <button class="nav-item" data-page="training" data-min="2">◈ &nbsp; Обучение</button>
+  <button class="nav-item" data-page="roles" data-min="3">◆ &nbsp; Должности</button>
+  <button class="nav-item" data-page="roster" data-min="3">▤ &nbsp; Личный состав</button>
+  <button class="nav-item" data-page="rules" data-min="3">⚠ &nbsp; Устав и правила</button>
+  <button class="nav-item" data-page="officer" data-min="4">✦ &nbsp; Офицерский раздел</button>
+  <button class="nav-item admin" data-page="admin" data-min="5">★ &nbsp; Панель администратора</button>
   <div class="side-label lower">RRT / DISCORD</div>
-  <div class="discord-box" id="discordBox"><span class="dot"></span> Авторизация через Discord<br><small>Войди через Discord — роли отряда откроют нужные разделы.</small></div>
+  <div class="discord-box" id="discordBox"><span class="dot"></span> Авторизация через Discord<br><small>Войдите, чтобы получить доступ по ролям.</small></div>
 </aside>
 <main class="content">
+
 <section id="home" class="page active">
   <div class="hero">
     <img src="assets/rrt-logo.png" class="hero-logo" alt="Rapid Response Team">
     <div class="hero-kicker">RAPID RESPONSE TEAM</div>
     <h1>ПОРТАЛ ОТРЯДА</h1>
-    <p>Единая информационная площадка RRT: руководство, состав, должности, обучение, опросник и личный кабинет бойца. Вход — через Discord отряда.</p>
+    <p>Единая информационная площадка RRT: руководство, состав, должности, обучение, опросники и внутренняя информация.</p>
     <div class="hero-line"></div>
     <div class="hero-meta"><span>STATUS: <b>ONLINE</b></span><span>ACCESS: <b id="accessState">PUBLIC</b></span><span>VERSION: <b>0.3</b></span></div>
   </div>
   <div class="section-title">ПРОФИЛЬ</div>
   <div class="profile-grid">
     <article class="card profile-card">
-      <div class="avatar" id="avatar">RRT</div><div><div class="eyebrow">DISCORD USER</div><h2 id="username">Гость</h2><div class="muted" id="roleLine">Войдите через Discord, чтобы загрузить роли отряда.</div></div>
+      <div class="avatar" id="avatar">RRT</div><div><div class="eyebrow">DISCORD USER</div><h2 id="username">Гость</h2><div class="muted" id="roleLine">Войдите через Discord, чтобы загрузить роли.</div></div>
       <div class="profile-status" id="profileStatus">GUEST</div>
     </article>
     <article class="card stat-card"><div class="eyebrow">РОЛИ DISCORD</div><div class="stat-number" id="roleCount">0</div><div class="muted">Синхронизируется с сервером RRT</div></article>
-    <article class="card stat-card"><div class="eyebrow">ДОСТУП</div><div class="stat-number" id="accessText">PUBLIC</div><div class="muted">Права определяются ролями</div></article>
+    <article class="card stat-card"><div class="eyebrow">ДОСТУП</div><div class="stat-number" id="accessText" style="font-size:24px">PUBLIC</div><div class="muted">Права определяются ролями</div></article>
   </div>
   <div class="section-title">РАЗДЕЛЫ ОТРЯДА</div>
-  <div class="cards-3">
-    <button class="card action-card" data-page="guide"><span class="icon">▣</span><h3>РУКОВОДСТВО</h3><p>Командование, структура RRT и распределение ответственности.</p><span class="action">ОТКРЫТЬ →</span></button>
-    <button class="card action-card" data-page="training"><span class="icon">◈</span><h3>ОБУЧЕНИЕ</h3><p>Инструктажи, материалы, тесты и квалификации бойцов.</p><span class="action">ОТКРЫТЬ →</span></button>
-    <button class="card action-card" data-page="survey"><span class="icon">✎</span><h3>ОПРОСНИК</h3><p>Анкета бойца RRT. Проходится один раз, статус виден Штабу.</p><span class="action">ОТКРЫТЬ →</span></button>
+  <div class="cards-3" id="homeCards">
+    <button class="card action-card" data-page="survey" data-min="1"><span class="icon">✎</span><h3>ОПРОСНИК</h3><p>Анкета кандидата в отряд RRT.</p><span class="action">ОТКРЫТЬ →</span></button>
+    <button class="card action-card" data-page="guide" data-min="2"><span class="icon">▣</span><h3>РУКОВОДСТВО</h3><p>Командование, структура RRT и распределение ответственности.</p><span class="action">ОТКРЫТЬ →</span></button>
+    <button class="card action-card" data-page="training" data-min="2"><span class="icon">◈</span><h3>ОБУЧЕНИЕ</h3><p>Инструктажи, материалы, тесты и квалификации бойцов.</p><span class="action">ОТКРЫТЬ →</span></button>
+    <button class="card action-card" data-page="roster" data-min="3"><span class="icon">▤</span><h3>ЛИЧНЫЙ СОСТАВ</h3><p>Участники, отделения, должности и Discord-роли.</p><span class="action">ОТКРЫТЬ →</span></button>
   </div>
 </section>
 
-<section id="guide" class="page">
-<div class="page-head"><div class="eyebrow">RRT / COMMAND</div><h1>РУКОВОДСТВО</h1><p>Структура управления отрядом.</p></div>
-<div class="command-tree"><div class="tree-node main">КОМАНДОВАНИЕ RRT</div><div class="tree-branch"><div class="tree-node">КОМАНДИР ОТРЯДА</div><div class="tree-node">ЗАМЕСТИТЕЛЬ</div></div><div class="tree-branch three"><div class="tree-node">FTL<br><small>ЛИДЕР ГРУППЫ</small></div><div class="tree-node">SL<br><small>КОМАНДИР ОТДЕЛЕНИЯ</small></div><div class="tree-node">PL<br><small>КОМАНДИР ВЗВОДА</small></div></div></div>
-<div class="notice"><b>RRT / COMMAND</b><br>Здесь позже можно разместить реальную структуру руководства, фотографии, контакты и полномочия.</div>
+<section id="cabinet" class="page" data-min="2">
+  <div class="page-head"><div class="eyebrow">RRT / PERSONAL</div><h1>ЛИЧНЫЙ КАБИНЕТ</h1><p>Ваш профиль, роли и прогресс обучения.</p></div>
+  <div class="grid-2">
+    <article class="card pad"><div class="eyebrow">ПРОФИЛЬ</div>
+      <div class="kv" style="margin-top:12px"><span>Ник</span><b id="cabName">—</b><span>Discord ID</span><b id="cabId">—</b><span>Уровень</span><b id="cabLevel">—</b><span>На сервере с</span><b id="cabJoined">—</b></div>
+      <div class="eyebrow" style="margin-top:18px">РОЛИ</div><div class="role-chips" id="cabRoles"></div>
+    </article>
+    <article class="card pad"><div class="eyebrow">ПРОГРЕСС ОБУЧЕНИЯ</div>
+      <div class="stat-number" id="cabPct">0%</div><div class="progress"><i id="cabBar" style="width:0"></i></div>
+      <ul class="check" id="cabTests"></ul>
+    </article>
+  </div>
 </section>
 
-<section id="training" class="page">
-<div class="page-head"><div class="eyebrow">RRT / TRAINING</div><h1>ОБУЧЕНИЕ</h1><p>Материалы и квалификации отряда. Тесты отмечает Штаб в панели администратора.</p></div>
-<div class="course-list">
-<article class="course available"><div class="course-num">01</div><div class="course-body"><h2>Вводный инструктаж</h2><p>Базовые правила, дисциплина, связь, безопасность и взаимодействие.</p><div class="tags"><span>BASE</span><span>10 ВОПРОСОВ</span></div></div><button class="course-btn" data-page="survey">ОПРОСНИК</button></article>
-<article class="course locked"><div class="course-num">02</div><div class="course-body"><h2>Стрелок и пулемётчик</h2><p>Основы применения вооружения и работы в составе группы.</p><div class="tags"><span>REQUIRES: BASIC</span></div></div><span class="lock">🔒</span></article>
-<article class="course locked"><div class="course-num">03</div><div class="course-body"><h2>Гренадер</h2><p>Квалификация и требования к должности.</p><div class="tags"><span>REQUIRES: RIFLEMAN</span></div></div><span class="lock">🔒</span></article>
-<article class="course locked"><div class="course-num">04</div><div class="course-body"><h2>Лидер команды (FTL)</h2><p>Управление малой группой и координация.</p><div class="tags"><span>REQUIRES: GRENADIER</span></div></div><span class="lock">🔒</span></article>
-</div></section>
+<section id="survey" class="page" data-min="1">
+  <div class="page-head"><div class="eyebrow">RRT / SURVEY</div><h1>ОПРОСНИК</h1><p>Заполните анкету. Ответы получит Штаб RRT.</p></div>
+  <div class="notice" style="margin-bottom:14px">Если форма не отображается — <a class="btn" id="formLink" target="_blank" rel="noopener">ОТКРЫТЬ В НОВОЙ ВКЛАДКЕ</a></div>
+  <iframe id="formFrame" class="form-frame" loading="lazy" title="Опросник RRT"></iframe>
+</section>
 
-<section id="roles" class="page"><div class="page-head"><div class="eyebrow">RRT / QUALIFICATIONS</div><h1>ДОЛЖНОСТИ</h1><p>Игровые квалификации и требования.</p></div><div class="table-card"><table><thead><tr><th>ДОЛЖНОСТЬ</th><th>ТРЕБОВАНИЕ</th><th>СТАТУС</th></tr></thead><tbody>
-<tr><td>Стрелок</td><td>Вводный инструктаж</td><td><span class="badge">LOCKED</span></td></tr><tr><td>Пулемётчик</td><td>Вводный инструктаж</td><td><span class="badge">LOCKED</span></td></tr><tr><td>Гренадер</td><td>Стрелок / Пулемётчик</td><td><span class="badge">LOCKED</span></td></tr><tr><td>FTL</td><td>Гренадер</td><td><span class="badge">LOCKED</span></td></tr><tr><td>SL</td><td>FTL</td><td><span class="badge">LOCKED</span></td></tr><tr><td>PL</td><td>SL</td><td><span class="badge">LOCKED</span></td></tr>
-</tbody></table></div></section>
+<section id="guide" class="page" data-min="2">
+<div class="page-head"><div class="eyebrow">RRT / COMMAND</div><h1>РУКОВОДСТВО</h1><p>Структура управления отрядом.</p></div>
+<div class="command-tree"><div class="tree-node main">ШТАБ RRT</div><div class="tree-branch"><div class="tree-node">КОМАНДИР ОТРЯДА</div><div class="tree-node">ЗАМЕСТИТЕЛЬ</div></div><div class="tree-branch three"><div class="tree-node">PL<br><small>КОМАНДИР ВЗВОДА</small></div><div class="tree-node">SL<br><small>КОМАНДИР ОТДЕЛЕНИЯ</small></div><div class="tree-node">FTL<br><small>ЛИДЕР ГРУППЫ</small></div></div></div>
+<div class="notice"><b>ИЕРАРХИЯ ДОСТУПА</b><br>Штаб → Офицер → Отряд RRT → Рекрут → С талончиком. Права на сайте определяются ролями Discord-сервера RRT.</div>
+</section>
 
-<section id="roster" class="page"><div class="page-head"><div class="eyebrow">RRT / PERSONNEL</div><h1>ЛИЧНЫЙ СОСТАВ</h1><p>Бойцы, вошедшие на портал. Роли подтягиваются из Discord отряда.</p></div><div class="card pad" id="rosterContent"><div class="empty"><img src="assets/rrt-logo.png" alt="RRT"><h2>DISCORD SYNC</h2><p>Список бойцов формируется автоматически из Discord. Войди через Discord, чтобы увидеть состав.</p></div></div></section>
+<section id="training" class="page" data-min="2">
+<div class="page-head"><div class="eyebrow">RRT / TRAINING</div><h1>ОБУЧЕНИЕ</h1><p>Пройдите тесты по порядку — каждый открывает следующий. Нужно набрать 80%.</p></div>
+<div class="course-list" id="courseList"></div>
+<div class="card quiz" id="quizBox" style="display:none;margin-top:16px"></div>
+</section>
 
-<section id="rules" class="page"><div class="page-head"><div class="eyebrow">RRT / REGULATIONS</div><h1>УСТАВ И ПРАВИЛА</h1><p>Основные положения отряда.</p></div><div class="rules">
+<section id="roles" class="page" data-min="3"><div class="page-head"><div class="eyebrow">RRT / QUALIFICATIONS</div><h1>ДОЛЖНОСТИ</h1><p>Игровые квалификации и требования.</p></div><div class="table-card card"><table><thead><tr><th>ДОЛЖНОСТЬ</th><th>ТРЕБОВАНИЕ</th><th>СТАТУС</th></tr></thead><tbody id="qualTable"></tbody></table></div></section>
+
+<section id="roster" class="page" data-min="3"><div class="page-head"><div class="eyebrow">RRT / PERSONNEL</div><h1>ЛИЧНЫЙ СОСТАВ</h1><p>Участники сервера RRT и их роли (из Discord).</p></div>
+<div class="table-card card"><table><thead><tr><th>БОЕЦ</th><th>УРОВЕНЬ</th><th>РОЛИ</th></tr></thead><tbody id="rosterTable"><tr><td colspan="3" class="muted">Загрузка…</td></tr></tbody></table></div></section>
+
+<section id="rules" class="page" data-min="3"><div class="page-head"><div class="eyebrow">RRT / REGULATIONS</div><h1>УСТАВ И ПРАВИЛА</h1><p>Основные положения отряда.</p></div><div class="rules">
 <div class="rule"><span>01</span><div><h2>ДИСЦИПЛИНА</h2><p>Соблюдать распоряжения командования и поддерживать рабочую атмосферу.</p></div></div>
 <div class="rule"><span>02</span><div><h2>СВЯЗЬ</h2><p>Соблюдать радиодисциплину и использовать голосовую связь по назначению.</p></div></div>
 <div class="rule"><span>03</span><div><h2>ВЗАИМОДЕЙСТВИЕ</h2><p>Действовать в интересах группы и своевременно передавать важную информацию.</p></div></div>
 <div class="rule"><span>04</span><div><h2>БЕЗОПАСНОСТЬ</h2><p>Соблюдать правила обращения с вооружением и требования сценария.</p></div></div>
 </div></section>
 
-<section id="cabinet" class="page">
-<div class="page-head"><div class="eyebrow">RRT / PERSONNEL FILE</div><h1>ЛИЧНЫЙ КАБИНЕТ</h1><p>Профиль бойца, роли Discord и прогресс обучения.</p></div>
-<div class="cabinet-grid">
-  <article class="card profile-card" id="cabinetProfile"></article>
-  <article class="card stat-card" id="cabinetMeta"></article>
-</div>
-<div class="section-title">ПРОГРЕСС ОБУЧЕНИЯ</div>
-<div class="card pad" id="cabinetProgress"></div>
-<div class="section-title">КВАЛИФИКАЦИИ</div>
-<div class="cards-3" id="cabinetQuals"></div>
+<section id="officer" class="page" data-min="4"><div class="page-head"><div class="eyebrow">RRT / OFFICERS</div><h1>ОФИЦЕРСКИЙ РАЗДЕЛ</h1><p>Работа с личным составом и рекрутами.</p></div>
+<div class="table-card card"><table><thead><tr><th>БОЕЦ</th><th>УРОВЕНЬ</th><th>ТЕСТЫ</th></tr></thead><tbody id="officerTable"><tr><td colspan="3" class="muted">Загрузка…</td></tr></tbody></table></div></section>
+
+<section id="admin" class="page" data-min="5"><div class="page-head"><div class="eyebrow">RRT / STAFF</div><h1>ПАНЕЛЬ АДМИНИСТРАТОРА</h1><p>Доступно только роли «Штаб».</p></div>
+<div class="admin-tabs"><button class="active" data-apane="aOverview">Обзор</button><button data-apane="aSurvey">Ответы на опросники</button><button data-apane="aAccess">Роли и доступ</button></div>
+<div class="apane active" id="aOverview"><div class="cards-3">
+ <div class="card stat-card"><div class="eyebrow">БОЙЦОВ НА СЕРВЕРЕ</div><div class="stat-number" id="stMembers">—</div></div>
+ <div class="card stat-card"><div class="eyebrow">ОТВЕТОВ НА ОПРОСНИК</div><div class="stat-number" id="stAnswers">—</div></div>
+ <div class="card stat-card"><div class="eyebrow">ВЕРСИЯ</div><div class="stat-number">0.3</div></div></div></div>
+<div class="apane" id="aSurvey"><div class="table-card card"><table><thead><tr><th>ДАТА</th><th>НИК / DISCORD</th><th>ОТВЕТЫ</th></tr></thead><tbody id="surveyTable"><tr><td colspan="3" class="muted">Загрузка…</td></tr></tbody></table></div></div>
+<div class="apane" id="aAccess"><div class="table-card card"><table><thead><tr><th>РОЛЬ DISCORD</th><th>ID</th><th>ДОСТУП</th></tr></thead><tbody id="accessTable"></tbody></table></div></div>
 </section>
 
-<section id="survey" class="page">
-<div class="page-head"><div class="eyebrow">RRT / SURVEY</div><h1>ОПРОСНИК</h1><p>Анкета бойца RRT. Заполни форму ниже — Штаб увидит ответ в панели администратора.</p></div>
-<div class="notice" id="surveyStatus"><b>СТАТУС: ПРОВЕРКА…</b></div>
-<div class="form-frame"><iframe id="surveyFrame" src="about:blank" title="RRT Опросник" loading="lazy"></iframe></div>
-<div class="survey-actions"><button class="btn-primary" id="surveySubmitBtn" data-testid="survey-submit-btn">Я ЗАПОЛНИЛ ОПРОСНИК</button><span class="muted">Нажми после отправки формы, чтобы Штаб видел, что анкета сдана.</span></div>
-</section>
-
-<section id="officer" class="page">
-<div class="page-head"><div class="eyebrow">RRT / OFFICER</div><h1>ОФИЦЕРСКИЙ РАЗДЕЛ</h1><p>Личный состав, роли и прогресс обучения бойцов. Только для Офицеров и Штаба.</p></div>
-<div class="card pad" id="officerContent"><div class="muted">Загрузка…</div></div>
-</section>
-
-<section id="admin" class="page">
-<div class="page-head"><div class="eyebrow">RRT / COMMAND ONLY</div><h1>ПАНЕЛЬ АДМИНИСТРАТОРА</h1><p>Полный доступ к порталу. Только для роли Штаб.</p></div>
-<div class="admin-tabs" id="adminTabs">
-  <button class="tab-btn active" data-tab="overview" data-testid="admin-tab-overview">ОБЗОР</button>
-  <button class="tab-btn" data-tab="personnel" data-testid="admin-tab-personnel">ЛИЧНЫЙ СОСТАВ</button>
-  <button class="tab-btn" data-tab="survey" data-testid="admin-tab-survey">ОПРОСНИКИ</button>
-  <button class="tab-btn" data-tab="training" data-testid="admin-tab-training">ОБУЧЕНИЕ</button>
-  <button class="tab-btn" data-tab="rolestab" data-testid="admin-tab-roles">РОЛИ И ДОСТУП</button>
-  <button class="tab-btn" data-tab="settings" data-testid="admin-tab-settings">НАСТРОЙКИ</button>
-</div>
-<div class="card pad" id="adminContent"><div class="muted">Загрузка…</div></div>
-</section>
+<section id="denied" class="page"><div class="card lock-screen"><img src="assets/rrt-logo.png" alt=""><h2>ДОСТУП ЗАКРЫТ</h2><p class="muted" id="deniedText">Войдите через Discord. Раздел открывается по роли на сервере RRT.</p></div></section>
 </main></div>
+<div class="modal" id="modal"><div class="modal-box" id="modalBox"></div></div>
+<script src="config.js"></script>
 <script src="script.js"></script>
 </body></html>
