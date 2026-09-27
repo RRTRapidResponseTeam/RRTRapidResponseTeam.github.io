@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rapid Response Team | Training Portal</title>
+  <meta name="description" content="Rapid Response Team — внутренний портал отряда">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">RRT</div>
+      <div>
+        <div class="brand-title">RAPID RESPONSE TEAM</div>
+        <div class="brand-sub">TRAINING PORTAL</div>
+      </div>
+    </div>
+    <div class="top-user"><span class="status-dot"></span>[RRT] Leprekon <span class="chevron">⌄</span></div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="side-label">НАВИГАЦИЯ</div>
+      <button class="nav-item active" data-page="home">⌂ &nbsp; Главная</button>
+      <button class="nav-item" data-page="guide">▣ &nbsp; Руководство</button>
+      <button class="nav-item" data-page="training">◈ &nbsp; Обучение</button>
+      <button class="nav-item" data-page="roles">◆ &nbsp; Должности</button>
+      <button class="nav-item" data-page="roster">▤ &nbsp; Личный состав</button>
+      <button class="nav-item" data-page="rules">⚠ &nbsp; Устав и правила</button>
+      <div class="side-label lower">СИСТЕМА</div>
+      <button class="nav-item" data-page="about">⚙ &nbsp; О портале</button>
+    </aside>
+
+    <main class="content">
+      <section id="home" class="page active">
+        <div class="hero">
+          <div class="hero-kicker">RAPID RESPONSE TEAM</div>
+          <h1>ВНУТРЕННИЙ ПОРТАЛ RRT</h1>
+          <p>Центр обучения, руководства и информации отряда.</p>
+          <div class="hero-line"></div>
+          <div class="hero-meta">
+            <span>STATUS: <b>ONLINE</b></span>
+            <span>ACCESS: <b>MEMBER</b></span>
+            <span>VERSION: <b>0.1</b></span>
+          </div>
+        </div>
+
+        <div class="section-title">ПРОФИЛЬ БОЙЦА</div>
+        <div class="profile-grid">
+          <article class="card profile-card">
+            <div class="avatar">RRT</div>
+            <div>
+              <div class="eyebrow">CURRENT USER</div>
+              <h2>[RRT] Leprekon</h2>
+              <div class="muted">Командный состав</div>
+            </div>
+            <div class="profile-status">ACTIVE</div>
+          </article>
+
+          <article class="card stat-card">
+            <div class="eyebrow">ОБУЧЕНИЕ</div>
+            <div class="stat-number">0%</div>
+            <div class="progress"><div class="fill" style="width:0%"></div></div>
+            <div class="muted">Начните с вводного инструктажа</div>
+          </article>
+
+          <article class="card stat-card">
+            <div class="eyebrow">ДОПУСКИ</div>
+            <div class="stat-number">0</div>
+            <div class="muted">Пройденные квалификации</div>
+          </article>
+        </div>
+
+        <div class="section-title">ДОСТУПНЫЕ РАЗДЕЛЫ</div>
+        <div class="cards-3">
+          <button class="card action-card" data-page="training">
+            <span class="icon">◈</span><h3>ОБУЧЕНИЕ</h3>
+            <p>Материалы, инструкции и тестирование для получения квалификаций.</p>
+            <span class="action">ОТКРЫТЬ →</span>
+          </button>
+          <button class="card action-card" data-page="guide">
+            <span class="icon">▣</span><h3>РУКОВОДСТВО</h3>
+            <p>Структура RRT, командование, отделения и зоны ответственности.</p>
+            <span class="action">ОТКРЫТЬ →</span>
+          </button>
+          <button class="card action-card" data-page="rules">
+            <span class="icon">⚠</span><h3>ПРАВИЛА</h3>
+            <p>Основные правила поведения, взаимодействия и работы на сервере.</p>
+            <span class="action">ОТКРЫТЬ →</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="guide" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / COMMAND</div><h1>РУКОВОДСТВО</h1><p>Структура и порядок управления отрядом.</p></div>
+        <div class="command-tree">
+          <div class="tree-node main">КОМАНДОВАНИЕ RRT</div>
+          <div class="tree-branch">
+            <div class="tree-node">КОМАНДИР ОТРЯДА</div>
+            <div class="tree-node">ЗАМЕСТИТЕЛЬ</div>
+          </div>
+          <div class="tree-branch three">
+            <div class="tree-node">FTL<br><small>ЛИДЕР ГРУППЫ</small></div>
+            <div class="tree-node">SL<br><small>КОМАНДИР ОТДЕЛЕНИЯ</small></div>
+            <div class="tree-node">PL<br><small>КОМАНДИР ВЗВОДА</small></div>
+          </div>
+        </div>
+        <div class="notice"><b>ПРИМЕЧАНИЕ</b><br>Фактическая структура, должности и полномочия могут быть изменены руководством RRT.</div>
+      </section>
+
+      <section id="training" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / TRAINING</div><h1>ОБУЧЕНИЕ</h1><p>Квалификации открываются последовательно после выполнения требований.</p></div>
+        <div class="course-list">
+          <article class="course available">
+            <div class="course-num">01</div><div class="course-body"><h2>Вводный инструктаж</h2><p>Базовые правила, дисциплина, связь, безопасность и взаимодействие.</p><div class="tags"><span>BASE</span><span>10 ВОПРОСОВ</span></div></div><button class="course-btn">НАЧАТЬ ТЕСТ</button>
+          </article>
+          <article class="course locked"><div class="course-num">02</div><div class="course-body"><h2>Стрелок и пулемётчик</h2><p>Основы применения стрелкового вооружения и работы в составе группы.</p><div class="tags"><span>REQUIRES: BASIC</span></div></div><span class="lock">🔒</span></article>
+          <article class="course locked"><div class="course-num">03</div><div class="course-body"><h2>Гренадер</h2><p>Работа с гранатомётными системами и взаимодействие с группой.</p><div class="tags"><span>REQUIRES: RIFLEMAN</span></div></div><span class="lock">🔒</span></article>
+          <article class="course locked"><div class="course-num">04</div><div class="course-body"><h2>Лидер команды (FTL)</h2><p>Управление малой группой, постановка задач и координация.</p><div class="tags"><span>REQUIRES: GRENADIER</span></div></div><span class="lock">🔒</span></article>
+          <article class="course locked"><div class="course-num">05</div><div class="course-body"><h2>Командир отделения (SL)</h2><p>Тактическое управление отделением и взаимодействие с командованием.</p><div class="tags"><span>REQUIRES: FTL</span></div></div><span class="lock">🔒</span></article>
+          <article class="course locked"><div class="course-num">06</div><div class="course-body"><h2>Командир взвода (PL)</h2><p>Планирование и управление несколькими отделениями.</p><div class="tags"><span>REQUIRES: SL</span></div></div><span class="lock">🔒</span></article>
+        </div>
+      </section>
+
+      <section id="roles" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / QUALIFICATIONS</div><h1>ДОЛЖНОСТИ</h1><p>Список игровых квалификаций и их требований.</p></div>
+        <div class="table-card"><table><thead><tr><th>ДОЛЖНОСТЬ</th><th>ТРЕБОВАНИЕ</th><th>СТАТУС</th></tr></thead><tbody>
+          <tr><td>Стрелок</td><td>Вводный инструктаж</td><td><span class="badge">LOCKED</span></td></tr>
+          <tr><td>Пулемётчик</td><td>Вводный инструктаж</td><td><span class="badge">LOCKED</span></td></tr>
+          <tr><td>Гренадер</td><td>Стрелок / Пулемётчик</td><td><span class="badge">LOCKED</span></td></tr>
+          <tr><td>FTL</td><td>Гренадер</td><td><span class="badge">LOCKED</span></td></tr>
+          <tr><td>SL</td><td>FTL</td><td><span class="badge">LOCKED</span></td></tr>
+          <tr><td>PL</td><td>SL</td><td><span class="badge">LOCKED</span></td></tr>
+        </tbody></table></div>
+      </section>
+
+      <section id="roster" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / PERSONNEL</div><h1>ЛИЧНЫЙ СОСТАВ</h1><p>Здесь позже можно подключить реальный список бойцов.</p></div>
+        <div class="card empty"><div class="empty-mark">RRT</div><h2>РАЗДЕЛ ГОТОВ</h2><p>На следующем этапе добавим карточки участников, отделения, роли, статусы и поиск.</p></div>
+      </section>
+
+      <section id="rules" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / REGULATIONS</div><h1>УСТАВ И ПРАВИЛА</h1><p>Основные положения отряда.</p></div>
+        <div class="rules">
+          <div class="rule"><span>01</span><div><h2>ДИСЦИПЛИНА</h2><p>Соблюдать распоряжения командования и поддерживать рабочую атмосферу.</p></div></div>
+          <div class="rule"><span>02</span><div><h2>СВЯЗЬ</h2><p>Использовать голосовую связь по назначению и соблюдать радиодисциплину.</p></div></div>
+          <div class="rule"><span>03</span><div><h2>ВЗАИМОДЕЙСТВИЕ</h2><p>Действовать в интересах группы и своевременно сообщать важную информацию.</p></div></div>
+          <div class="rule"><span>04</span><div><h2>БЕЗОПАСНОСТЬ</h2><p>Соблюдать правила обращения с вооружением и требования конкретного сценария.</p></div></div>
+        </div>
+      </section>
+
+      <section id="about" class="page">
+        <div class="page-head"><div class="eyebrow">RRT / SYSTEM</div><h1>О ПОРТАЛЕ</h1><p>Rapid Response Team Training Portal.</p></div>
+        <div class="card about"><h2>RRT TRAINING PORTAL</h2><p>Это стартовая версия интерфейса. Она полностью статическая и готова к размещению на GitHub Pages.</p><div class="system-grid"><div><b>THEME</b><span>OLIVE / RED</span></div><div><b>HOSTING</b><span>GITHUB PAGES</span></div><div><b>VERSION</b><span>0.1</span></div><div><b>STATUS</b><span>ONLINE</span></div></div></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
