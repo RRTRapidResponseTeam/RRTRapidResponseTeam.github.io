@@ -7,7 +7,7 @@ let USER = null, LEVEL = 0;
 const token = () => localStorage.getItem("rrt_session");
 async function api(path, opt = {}) {
   const r = await fetch(AUTH + path, {...opt, headers: {"Content-Type":"application/json", Authorization: "Bearer " + token(), ...(opt.headers||{})}});
-  if (!r.ok) throw new Error(r.status);
+  if (!r.ok) { let m = r.status; try { const j = await r.json(); if (j && j.error) m = j.error; } catch(e){} throw new Error(m); }
   return r.json();
 }
 
@@ -43,7 +43,7 @@ function applyUser(u) {
   $("roleCount").textContent = (u.roles||[]).length;
   $("roleLine").textContent = (u.role_names||[]).join(" • ") || "Discord подключён";
   $("discordBox").innerHTML = '<span class="dot ok"></span> Discord подключён<br><small>Роли синхронизированы с сервером RRT.</small>';
-  if (u.avatar) $("avatar").innerHTML = '<img style="width:100%;height:100%;border-radius:50%" src="' + esc(u.avatar) + '" alt="">';
+  if (u.avatar) $("avatar").innerHTML = '<img style="width:100%;height:100%;border-radius:50%;object-fit:cover" src="' + esc(u.avatar) + '" alt="">';
   $("account").innerHTML = '<span class="acc-user">' + (u.avatar ? '<img src="' + esc(u.avatar) + '" alt="">' : "") + esc(name) + '</span><button class="logout" id="logoutBtn">ВЫЙТИ</button>';
   $("logoutBtn").onclick = logout;
   // кабинет
@@ -128,14 +128,31 @@ document.addEventListener("click", e => {
 
 /* ---------- roster / officer ---------- */
 let ROSTER = null;
+const GROUPS = [[5,"ШТАБ"],[4,"ОФИЦЕРЫ"],[3,"ОТРЯД RRT"],[2,"РЕКРУТЫ"],[1,"С ТАЛОНЧИКОМ"]];
+function groupedRows(list, render) {
+  let html = "";
+  for (const [lv, title] of GROUPS) {
+    const g = list.filter(m => m.level === lv);
+    if (!g.length) continue;
+    html += '<tr class="grp"><td colspan="3">' + title + ' — ' + g.length + '</td></tr>' + g.map(render).join("");
+  }
+  return html || '<tr><td colspan="3" class="muted">Пусто</td></tr>';
+}
+function renderRosterTables() {
+  $("rosterTable").innerHTML = groupedRows(ROSTER, m => '<tr><td>' + esc(m.name) + '</td><td>' + LEVELS[m.level] + '</td><td>' + (m.role_names||[]).map(r => '<span class="chip">' + esc(r) + '</span>').join(" ") + '</td></tr>');
+  $("officerTable").innerHTML = groupedRows(ROSTER, m => '<tr><td>' + esc(m.name) + '</td><td>' + LEVELS[m.level] + '</td><td>' + (m.tests ?? 0) + ' / ' + TESTS.length + '</td></tr>');
+}
 async function loadRoster() {
-  if (ROSTER || !CONFIGURED) { if (!CONFIGURED) { $("rosterTable").innerHTML = $("officerTable").innerHTML = '<tr><td colspan="3" class="muted">Подключите Worker (config.js).</td></tr>'; } return; }
+  if (ROSTER) { renderRosterTables(); return; }
+  if (!CONFIGURED) { $("rosterTable").innerHTML = $("officerTable").innerHTML = '<tr><td colspan="3" class="muted">Подключите Worker (config.js).</td></tr>'; return; }
   try {
     ROSTER = (await api("/api/roster")).members;
-    $("rosterTable").innerHTML = ROSTER.map(m => '<tr><td>' + esc(m.name) + '</td><td>' + LEVELS[m.level] + '</td><td>' + (m.role_names||[]).map(r => '<span class="chip">' + esc(r) + '</span>').join(" ") + '</td></tr>').join("") || '<tr><td colspan="3">Пусто</td></tr>';
-    $("officerTable").innerHTML = ROSTER.map(m => '<tr><td>' + esc(m.name) + '</td><td>' + LEVELS[m.level] + '</td><td>' + (m.tests ?? 0) + ' / ' + TESTS.length + '</td></tr>').join("");
+    renderRosterTables();
     $("stMembers").textContent = ROSTER.length;
-  } catch (e) { $("rosterTable").innerHTML = $("officerTable").innerHTML = '<tr><td colspan="3" class="muted">Нет доступа или ошибка загрузки (' + e.message + ').</td></tr>'; }
+  } catch (e) {
+    const msg = String(e.message), hint = /members intent|403/i.test(msg) ? "<br><br>Похоже, в Discord Developer Portal → Bot не включён <b>SERVER MEMBERS INTENT</b>. Включи и нажми Save Changes." : "";
+    $("rosterTable").innerHTML = $("officerTable").innerHTML = '<tr><td colspan="3" class="muted">Нет доступа или ошибка загрузки (' + esc(msg) + ').' + hint + '</td></tr>';
+  }
 }
 
 /* ---------- admin ---------- */
@@ -152,7 +169,7 @@ async function loadAdmin() {
     SURVEY = (await api("/api/admin/survey")).responses || [];
     $("stAnswers").textContent = SURVEY.length;
     $("surveyTable").innerHTML = SURVEY.map((r, i) => '<tr><td>' + esc(r.date) + '</td><td>' + esc(r.nick) + '</td><td><button class="btn" data-resp="' + i + '">ОТКРЫТЬ →</button></td></tr>').join("") || '<tr><td colspan="3" class="muted">Ответов пока нет.</td></tr>';
-  } catch (e) { $("surveyTable").innerHTML = '<tr><td colspan="3" class="muted">Не удалось загрузить ответы (' + e.message + '). Проверьте настройку Google-таблицы (README).</td></tr>'; }
+  } catch (e) { $("surveyTable").innerHTML = '<tr><td colspan="3" class="muted">Не удалось загрузить ответы (' + esc(String(e.message)) + '). Проверьте настройку Google-таблицы (README).</td></tr>'; }
 }
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-resp]");

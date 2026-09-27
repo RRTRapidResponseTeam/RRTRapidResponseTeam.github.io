@@ -1,11 +1,11 @@
 /*
- RRT Auth Worker v0.3 (Cloudflare Worker)
+ RRT Auth Worker v0.3.1 (Cloudflare Worker)
  Secrets:  DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_BOT_TOKEN, SESSION_SECRET,
            SHEET_SCRIPT_URL, SHEET_SCRIPT_TOKEN
  Vars:     SITE_URL = https://rrtrapidresponseteam.github.io
  KV binding (необязательно, для сохранения тестов): RRT_KV
  Discord Redirect: https://<worker>.workers.dev/auth/callback   Scopes: identify guilds.members.read
- Bot: пригласить на сервер RRT, включить "Server Members Intent".
+ Bot: пригласить на сервер RRT + в Developer Portal → Bot включить "Server Members Intent" (для списка состава).
 */
 const GUILD_ID = "1523641828149039249";
 const ROLE_LEVELS = {
@@ -22,6 +22,7 @@ async function sign(d,s){const k=await crypto.subtle.importKey("raw",enc.encode(
 async function mkToken(p,s){const b=b64u(enc.encode(JSON.stringify(p)));return b+"."+await sign(b,s);}
 async function verify(t,s){try{const[b,g]=t.split(".");if(!b||!g||await sign(b,s)!==g)return null;const p=JSON.parse(new TextDecoder().decode(unb64u(b)));return p.exp<Date.now()?null:p;}catch{return null;}}
 const levelOf = roles => Math.max(0, ...(roles||[]).map(r => ROLE_LEVELS[r] || 0));
+const avatarUrl = (id, av) => av ? `https://cdn.discordapp.com/avatars/${id}/${av}${av.startsWith("a_")?".gif":".png"}?size=128` : null;
 async function roleMap(env){const r=await fetch(`https://discord.com/api/guilds/${GUILD_ID}/roles`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`}});if(!r.ok)return new Map();return new Map((await r.json()).map(x=>[x.id,x.name]));}
 
 export default {
@@ -34,7 +35,7 @@ export default {
 
   if (url.pathname === "/auth/discord") {
    const state = crypto.randomUUID();
-   const auth = "https://discord.com/oauth2/authorize?response_type=code&client_id="+encodeURIComponent(env.DISCORD_CLIENT_ID)+"&scope=identify%20guilds.members.read&state="+state+"&redirect_uri="+encodeURIComponent(url.origin+"/auth/callback")+"&prompt=none";
+   const auth = "https://discord.com/oauth2/authorize?response_type=code&client_id="+encodeURIComponent(env.DISCORD_CLIENT_ID)+"&scope=identify%20guilds.members.read&state="+state+"&redirect_uri="+encodeURIComponent(url.origin+"/auth/callback")+"&prompt=consent";
    return new Response(null,{status:302,headers:{Location:auth,"Set-Cookie":`rrt_state=${state}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=600`}});
   }
   if (url.pathname === "/auth/callback") {
@@ -49,7 +50,7 @@ export default {
    if (!mr.ok) return fail("Этот Discord-аккаунт не состоит на сервере RRT.");
    const m = await mr.json();
    const t = await mkToken({sub:me.id,username:me.username,global_name:me.global_name,nick:m.nick||null,
-     avatar:me.avatar?`https://cdn.discordapp.com/avatars/${me.id}/${me.avatar}.png`:null,
+     avatar:avatarUrl(me.id, me.avatar),
      roles:m.roles, joined_at:m.joined_at, exp:Date.now()+12*3600e3}, env.SESSION_SECRET);
    return new Response(null,{status:302,headers:{Location:site+"/#auth="+encodeURIComponent(t),"Set-Cookie":"rrt_state=; Max-Age=0; Path=/"}});
   }
@@ -85,8 +86,8 @@ export default {
   if (url.pathname === "/api/roster") {
    if (level < 3) return json({error:"forbidden"},403);
    const r = await fetch(`https://discord.com/api/guilds/${GUILD_ID}/members?limit=1000`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`}});
-   if (!r.ok) return json({error:"discord "+r.status},502);
-   const list = (await r.json()).filter(m=>!m.user.bot).map(m=>({id:m.user.id,name:m.nick||m.user.global_name||m.user.username,level:levelOf(m.roles),role_names:m.roles.filter(x=>ROLE_LEVELS[x]).map(x=>map.get(x)||x)})).filter(m=>m.level>0).sort((x,y)=>y.level-x.level);
+   if (!r.ok) return json({error:"Discord вернул "+r.status+(r.status===403?" — включи SERVER MEMBERS INTENT в Developer Portal → Bot":"")},502);
+   const list = (await r.json()).filter(m=>!m.user.bot).map(m=>({id:m.user.id,name:m.nick||m.user.global_name||m.user.username,avatar:avatarUrl(m.user.id,m.user.avatar),level:levelOf(m.roles),role_names:m.roles.filter(x=>ROLE_LEVELS[x]).map(x=>map.get(x)||x)})).filter(m=>m.level>0).sort((x,y)=>y.level-x.level||String(x.name).localeCompare(String(y.name)));
    if (level >= 4 && env.RRT_KV) for (const m of list) m.tests = Object.keys(JSON.parse(await env.RRT_KV.get("tests:"+m.id)||"{}")).length;
    return json({members:list});
   }
