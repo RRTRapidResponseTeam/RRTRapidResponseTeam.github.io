@@ -1,0 +1,20 @@
+# Cloudflare Worker для портала RRT (авторизация Discord + данные портала).
+# Деплой через терминал: wrangler deploy   (или залей discord-worker.js через панель Cloudflare)
+
+name = "rrt-auth"
+main = "discord-worker.js"
+compatibility_date = "2024-12-01"
+
+# KV-хранилище: состав, прогресс тестов, отметки об опроснике.
+# Создай неймспейс: wrangler kv namespace create RRT_KV  → вставь его id ниже
+[[kv_namespaces]]
+binding = "RRT_KV"
+id = "ВСТАВЬ_СЮДА_ID_KV_НЕЙМСПЕЙСА"
+
+# Несекретные переменные можно вписать здесь, секреты — только через
+# wrangler secret put ИЛИ панель: Settings → Variables & Secrets:
+#   DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_GUILD_ID,
+#   SESSION_SECRET, SITE_URL, GOOGLE_SHEET_CSV_URL
+[vars]
+# SITE_URL = "https://rrtrapidresponseteam.github.io"
+# DISCORD_GUILD_ID = "1523641828149039249"
