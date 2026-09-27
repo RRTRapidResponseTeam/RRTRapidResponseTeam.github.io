@@ -43,7 +43,7 @@ function applyUser(u) {
   $("roleCount").textContent = (u.roles||[]).length;
   $("roleLine").textContent = (u.role_names||[]).join(" • ") || "Discord подключён";
   $("discordBox").innerHTML = '<span class="dot ok"></span> Discord подключён<br><small>Роли синхронизированы с сервером RRT.</small>';
-  if (u.avatar) $("avatar").innerHTML = '<img style="width:100%;height:100%;border-radius:50%;object-fit:cover" src="' + esc(u.avatar) + '" alt="">';
+  if (u.avatar) $("avatar").innerHTML = '<img style="width:58px;height:58px;border-radius:50%;object-fit:cover" src="' + esc(u.avatar) + '" alt="">';
   $("account").innerHTML = '<span class="acc-user">' + (u.avatar ? '<img src="' + esc(u.avatar) + '" alt="">' : "") + esc(name) + '</span><button class="logout" id="logoutBtn">ВЫЙТИ</button>';
   $("logoutBtn").onclick = logout;
   // кабинет

@@ -1,11 +1,13 @@
 /*
- RRT Auth Worker v0.3.1 (Cloudflare Worker)
+ RRT Auth Worker v0.3.2 (Cloudflare Worker)
  Secrets:  DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_BOT_TOKEN, SESSION_SECRET,
            SHEET_SCRIPT_URL, SHEET_SCRIPT_TOKEN
  Vars:     SITE_URL = https://rrtrapidresponseteam.github.io
  KV binding (необязательно, для сохранения тестов): RRT_KV
  Discord Redirect: https://<worker>.workers.dev/auth/callback   Scopes: identify guilds.members.read
  Bot: пригласить на сервер RRT + в Developer Portal → Bot включить "Server Members Intent" (для списка состава).
+ Иерархия в списке состава: уровень роли доступа (Штаб → Офицер → Отряд RRT → Рекрут → С талончиком),
+ внутри одного уровня — по позиции самой верхней роли звания на сервере Discord.
 */
 const GUILD_ID = "1523641828149039249";
 const ROLE_LEVELS = {
@@ -23,7 +25,8 @@ async function mkToken(p,s){const b=b64u(enc.encode(JSON.stringify(p)));return b
 async function verify(t,s){try{const[b,g]=t.split(".");if(!b||!g||await sign(b,s)!==g)return null;const p=JSON.parse(new TextDecoder().decode(unb64u(b)));return p.exp<Date.now()?null:p;}catch{return null;}}
 const levelOf = roles => Math.max(0, ...(roles||[]).map(r => ROLE_LEVELS[r] || 0));
 const avatarUrl = (id, av) => av ? `https://cdn.discordapp.com/avatars/${id}/${av}${av.startsWith("a_")?".gif":".png"}?size=128` : null;
-async function roleMap(env){const r=await fetch(`https://discord.com/api/guilds/${GUILD_ID}/roles`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`}});if(!r.ok)return new Map();return new Map((await r.json()).map(x=>[x.id,x.name]));}
+// id → {name, position} — position нужен для иерархии званий
+async function roleMap(env){const r=await fetch(`https://discord.com/api/guilds/${GUILD_ID}/roles`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`}});if(!r.ok)return new Map();return new Map((await r.json()).map(x=>[x.id,{name:x.name,position:x.position||0}]));}
 
 export default {
  async fetch(req, env) {
@@ -70,7 +73,7 @@ export default {
   const level = levelOf(roles);
 
   if (url.pathname === "/api/me")
-   return json({...p, roles, role_names: roles.filter(r=>map.has(r)).map(r=>map.get(r)), level});
+   return json({...p, roles, role_names: roles.filter(r=>map.has(r)).map(r=>map.get(r).name), level});
 
   if (url.pathname === "/api/tests") {
    if (level < 2) return json({error:"forbidden"},403);
@@ -87,7 +90,14 @@ export default {
    if (level < 3) return json({error:"forbidden"},403);
    const r = await fetch(`https://discord.com/api/guilds/${GUILD_ID}/members?limit=1000`,{headers:{Authorization:`Bot ${env.DISCORD_BOT_TOKEN}`}});
    if (!r.ok) return json({error:"Discord вернул "+r.status+(r.status===403?" — включи SERVER MEMBERS INTENT в Developer Portal → Bot":"")},502);
-   const list = (await r.json()).filter(m=>!m.user.bot).map(m=>({id:m.user.id,name:m.nick||m.user.global_name||m.user.username,avatar:avatarUrl(m.user.id,m.user.avatar),level:levelOf(m.roles),role_names:m.roles.filter(x=>ROLE_LEVELS[x]).map(x=>map.get(x)||x)})).filter(m=>m.level>0).sort((x,y)=>y.level-x.level||String(x.name).localeCompare(String(y.name)));
+   const list = (await r.json()).filter(m=>!m.user.bot).map(m=>({
+     id:m.user.id, name:m.nick||m.user.global_name||m.user.username, avatar:avatarUrl(m.user.id,m.user.avatar),
+     level:levelOf(m.roles),
+     // самая верхняя роль звания (позиция роли на сервере Discord) — для порядка внутри уровня
+     top:Math.max(0, ...(m.roles||[]).map(x=>map.get(x)?.position ?? 0)),
+     role_names:m.roles.filter(x=>ROLE_LEVELS[x]).map(x=>map.get(x)?.name||x)
+   })).filter(m=>m.level>0)
+     .sort((x,y)=> y.level-x.level || y.top-x.top || String(x.name).localeCompare(String(y.name)));
    if (level >= 4 && env.RRT_KV) for (const m of list) m.tests = Object.keys(JSON.parse(await env.RRT_KV.get("tests:"+m.id)||"{}")).length;
    return json({members:list});
   }
