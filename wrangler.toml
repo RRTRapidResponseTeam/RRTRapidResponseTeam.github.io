@@ -16,5 +16,5 @@ id = "b96a00f69c744c769a317cc58ea8461f"
 #   DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_GUILD_ID,
 #   SESSION_SECRET, SITE_URL, GOOGLE_SHEET_CSV_URL
 [vars]
-# SITE_URL = "https://rrtrapidresponseteam.github.io"
+SITE_URL = "https://rrtrapidresponseteam.github.io"
 # DISCORD_GUILD_ID = "1523641828149039249"
