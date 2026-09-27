@@ -1,7 +1,7 @@
 // ===== RRT UNIT PORTAL — КОНФИГУРАЦИЯ =====
 // Замените AUTH_BASE на адрес вашего Cloudflare Worker после его создания.
 window.RRT_CONFIG = {
-  AUTH_BASE: "https://YOUR-RRT-AUTH-WORKER.workers.dev",
+  AUTH_BASE: "rrtauth.danikleprekon.workers.dev",
   GUILD_ID: "1523641828149039249",
   FORM_ID: "1FAIpQLSdJkMzE3pGGnDtjx0J0xEmmKdADfjEPuZ43oUyxq5cRoVNsdg",
   // Необязательно: ID поля формы для автоподстановки Discord-ника, например "entry.123456789"
