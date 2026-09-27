@@ -9,7 +9,7 @@ compatibility_date = "2024-12-01"
 # Создай неймспейс: wrangler kv namespace create RRT_KV  → вставь его id ниже
 [[kv_namespaces]]
 binding = "RRT_KV"
-id = "ВСТАВЬ_СЮДА_ID_KV_НЕЙМСПЕЙСА"
+id = "b96a00f69c744c769a317cc58ea8461f"
 
 # Несекретные переменные можно вписать здесь, секреты — только через
 # wrangler secret put ИЛИ панель: Settings → Variables & Secrets:
