@@ -1,0 +1,11 @@
+name = "rrt-unit-api"
+main = "worker.js"
+compatibility_date = "2026-09-30"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "rrt-production"
+database_id = "49681d84-e147-4829-9884-457bfa248c71"
+
+[vars]
+CORS_ORIGIN = "https://rrtrapidresponseteam.github.io"
