@@ -1,0 +1,8 @@
+{
+  "name": "rrt-unit-portal-v4.5",
+  "private": true,
+  "scripts": {
+    "test": "python tests/smoke.py",
+    "check": "node --check app.js && node --check worker/worker.js"
+  }
+}
